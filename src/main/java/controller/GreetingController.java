@@ -38,4 +38,5 @@ public class GreetingController {
 		
 		return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
 	}
+
 }
