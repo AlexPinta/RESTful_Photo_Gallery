@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" crossorigin="anonymous">
+    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" crossorigin="anonymous"></script>-->
+    <script src="../static/app.js"></script>
+
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-heading"></div>
+            <div class="panel-body ">
+                <h4>Select your pic folder</h4>
+                <form action="" method="post" enctype="multipart/form-data" id="js-upload-form">
+                    <div class="form-inline">
+                        <div class="form-group">
+                            <input type="file" name="folder" id="uploadFolder" webkitdirectory directory multiple title="Choose folder">
+                        </div>
+                        <button type="submit" class="btn btn-md btn-primary" onclick='scanFolder()'>Create gallery</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
