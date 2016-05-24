@@ -15,7 +15,7 @@
             <div class="panel-heading"></div>
             <div class="panel-body ">
             <h4>Select your pic folder</h4>
-                <form action="/photo/addPicture" method="post"  enctype="multipart/form-data">
+                <form action="/photo/addPicture" method="post" enctype="multipart/form-data">
                     <div class="form-inline">
                         <div class="form-group">
                             <input type="file" name="uploadFolder" id="uploadFolder" webkitdirectory="" directory="" multiple=""/>
@@ -25,19 +25,37 @@
                 </form>
             </div>
         </div>
-
+		
+		<h4>Title:</h4>
+		
+		<!-- <div>
+	        <img th:src="@{/images/temp1.png}"
+	          src="../static/images/temp1.png" class="img-responsive" alt="Responsive image"/>
+	    </div> -->
+		
+		imageCountInRow: <p th:text="${imageCountInRow}" />
+		fileList:
+		<p/>
+		<tr th:each="fileitem,iterationStatus  : ${listFiles}">
+			# <td th:text="${iterationStatus.count}">1</td>
+			| filename: <td th:text="${fileitem.name}">name</td>
+			| filepath: <td th:text="${fileitem.getPath()}">name</td>
+			<p/>
+			<img alt="" th:src="@{/getImage/${fileitem.getPath()}" th:attr="width=@{imageWidth}" th:attr="height=@{imageHeight}"/> />
+		</tr>
+		
         <!--<tr th:each="file : ${fileList}">-->
             <!--<td th:text="${file.name}">Name</td>-->
         <!--</tr>-->
-        <div class="row">
+        <!-- <div class="row">
             <div class='list-group gallery'>
                 <div class='col-sm-4 col-xs-6 col-md-3 col-lg-3'>
-                    <!--<a class="thumbnail fancybox" rel="ligthbox" href="http://placehold.it/300x320.png">-->
+                    <a class="thumbnail fancybox" rel="ligthbox" href="http://placehold.it/300x320.png">
                         <img class="img-responsive" alt="" th:src="@{/getImage/!!!!!}" th:attr="width=@{imageWidth}" th:attr="height=@{imageHeight}"/> />
-                    <!--</a>-->
-                </div> <!-- col-6 / end -->
+                    </a>
+                </div> col-6 / end
             </div>
-        </div>
+        </div> -->
 
 
     </div>

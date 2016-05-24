@@ -5,9 +5,11 @@ import java.util.Collections;
 import java.util.Queue;
 
 import helper.FileManager;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,7 +45,7 @@ public class GalleryController {
 	 * the produces element tells Spring to convert the List of Greeting objects into JSON response
 	 */
 	@RequestMapping(value = "/photo/addPicture", method = RequestMethod.POST)
-	public ResponseEntity addPicture(HttpServletRequest request) {
+	public ModelAndView addPicture(HttpServletRequest request, Model model) {
 		final String FILES_PARAMETER = "uploadFolder";
 		final String FILES_SUFFIX = ".png";
 
@@ -60,7 +62,11 @@ public class GalleryController {
 			}
 
 		}
-		return responseEntity;
+		
+		setModelAttribute(model);
+		
+		return new ModelAndView(INDEX_PAGE);
+		//return responseEntity;
 	}
 
 	@RequestMapping(value = "/getImage/{filePath}", method = RequestMethod.GET)
@@ -75,7 +81,7 @@ public class GalleryController {
 		}
 	}
 
-	@RequestMapping(value = "/photo/row/{imageCountInRow}", method = RequestMethod.GET)
+	/*@RequestMapping(value = "/photo/row/{imageCountInRow}", method = RequestMethod.GET)
 	public void getImage(HttpServletRequest request, HttpServletResponse response, @PathVariable int imageCountInRow) {
 		setDefaultSetting(request, response);
 	}
@@ -99,5 +105,22 @@ public class GalleryController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+*/	
+	/**
+	 * method sets all needed attribute, so that thymeleaf could use them
+	 * parameter model we change this parameter by setting attributes
+	 */
+	private void setModelAttribute(Model model) {
+		final int DEFAULT_COUNT_IN_ROW = 4;
+		final int DEFAULT_IMAGE_SIZE = 200;
+
+		model.addAttribute("listFiles", fileManager.getFileQueue().toArray());
+		model.addAttribute("imageCount", fileManager.getFileQueue().size());
+		model.addAttribute("backgroundStyle", "");
+		model.addAttribute("imageCountInRow", DEFAULT_COUNT_IN_ROW);
+		model.addAttribute("isOriginalSize", false);
+		model.addAttribute("imageHeight", DEFAULT_IMAGE_SIZE);
+		model.addAttribute("imageWidth", DEFAULT_IMAGE_SIZE);
 	}
 }
