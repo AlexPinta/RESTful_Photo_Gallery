@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" crossorigin="anonymous"></link>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" crossorigin="anonymous"></link>
     <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" crossorigin="anonymous"></script>-->
-    <script src="/app.js" th:href="@{/app.js}"></script>
+    <!--<script src="/app.js" th:href="@{/app.js}"></script>-->
     <title>Photo gallery</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
@@ -15,16 +15,31 @@
             <div class="panel-heading"></div>
             <div class="panel-body ">
             <h4>Select your pic folder</h4>
-                <form action="/" method="post" enctype="multipart/form-data" id="js-upload-form">
+                <form action="/photo/addPicture" method="post"  enctype="multipart/form-data">
                     <div class="form-inline">
                         <div class="form-group">
-                            <input type="file" name="folder" id="uploadFolder" webkitdirectory="" directory="" multiple=""/>
+                            <input type="file" name="uploadFolder" id="uploadFolder" webkitdirectory="" directory="" multiple=""/>
                         </div>
                     <button type="submit" class="btn btn-md btn-primary">Create gallery</button>
                     </div>
                 </form>
             </div>
         </div>
+
+        <!--<tr th:each="file : ${fileList}">-->
+            <!--<td th:text="${file.name}">Name</td>-->
+        <!--</tr>-->
+        <div class="row">
+            <div class='list-group gallery'>
+                <div class='col-sm-4 col-xs-6 col-md-3 col-lg-3'>
+                    <!--<a class="thumbnail fancybox" rel="ligthbox" href="http://placehold.it/300x320.png">-->
+                        <img class="img-responsive" alt="" th:src="@{/getImage/!!!!!}" th:attr="width=@{imageWidth}" th:attr="height=@{imageHeight}"/> />
+                    <!--</a>-->
+                </div> <!-- col-6 / end -->
+            </div>
+        </div>
+
+
     </div>
 </body>
 </html>
