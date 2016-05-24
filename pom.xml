@@ -5,7 +5,7 @@
 	<groupId>ua.pinta</groupId>
 	<artifactId>photo-gallery</artifactId>
 	<version>1.0.1</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 
 	<name>RESTful Photo Gallery</name>
 	<description>Simple Photo Gallery micro service</description>

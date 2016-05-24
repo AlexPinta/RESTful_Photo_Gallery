@@ -2,17 +2,18 @@ package helper;
 
 import org.springframework.stereotype.Component;
 import java.io.OutputStream;
+import java.util.Deque;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 @Component
 public class CacheManager {
-    private ConcurrentLinkedDeque<OutputStream> fileQueue;
+    private Deque<OutputStream> fileQueue;
 
     public CacheManager() {
         this.fileQueue = new ConcurrentLinkedDeque<>();
     }
 
-    public ConcurrentLinkedDeque<OutputStream> getFileQueue() {
+    public Deque<OutputStream> getFileQueue() {
         return this.fileQueue;
     }
 
