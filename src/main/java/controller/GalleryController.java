@@ -1,15 +1,17 @@
 package controller;
 
 import java.io.*;
-import java.math.BigInteger;
+import java.util.Iterator;
+import java.util.List;
 
 import helper.CacheManager;
+import org.apache.tomcat.util.http.fileupload.FileItem;
+import org.apache.tomcat.util.http.fileupload.RequestContext;
+import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
+import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
+import org.apache.tomcat.util.http.fileupload.servlet.ServletRequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,6 +27,7 @@ import javax.servlet.http.Part;
  */
 @RestController
 public class GalleryController {
+	private final int MAX_MEM_SIZE = 20 * 1024;
 	@Autowired
 	CacheManager cacheManager;
 
@@ -43,28 +46,45 @@ public class GalleryController {
 			method = RequestMethod.POST,
 			consumes = MediaType.IMAGE_PNG_VALUE)
 	protected void doPost(HttpServletRequest request) throws IOException, ServletException {
-		final String relativePath = request.getParameter("relativePath");
-		final Part filePart = request.getPart("file");
+		final String userFolder = System.getProperty("user.home");
+		final String filePath = request.getServletContext().getInitParameter("file-upload");
 
-		InputStream fileContent = null;
-		try (OutputStream out = new FileOutputStream(new File(relativePath + File.separator + relativePath))) {
-			fileContent = filePart.getInputStream();
+		DiskFileItemFactory factory = new DiskFileItemFactory();
+		factory.setSizeThreshold(MAX_MEM_SIZE);
+		factory.setRepository(new File(userFolder));
 
-			int read = 0;
-			final byte[] bytes = new byte[2048];
-
-			while ((read = fileContent.read(bytes)) != -1) {
-				out.write(bytes, 0, read);
+		ServletFileUpload upload = new ServletFileUpload(factory);
+		try {
+			List fileItems = upload.parseRequest(new ServletRequestContext(request));
+			Iterator i = fileItems.iterator();
+			while (i.hasNext()) {
+				saveFile(filePath, (FileItem)i.next());
 			}
-			cacheManager.addFile(out);
-
-//			LOGGER.log(Level.INFO, "File{0}being uploaded to {1}", new Object[]{fileName, path});
-		} catch (FileNotFoundException fne) {
-//			LOGGER.log(Level.SEVERE, "Problems during file upload. Error: {0}", new Object[]{fne.getMessage()});
-		} finally {
-			if (fileContent != null) {
-				fileContent.close();
-			}
+		} catch(Exception ex) {
+			//TODO logging
 		}
+	}
+
+	private void saveFile(String filePath, FileItem fi) {
+		File file;
+		if ( !fi.isFormField () ) {
+//            String fieldName = fi.getFieldName();
+            String fileName = fi.getName();
+//            String contentType = fi.getContentType();
+//            boolean isInMemory = fi.isInMemory();
+//            long sizeInBytes = fi.getSize();
+            if( fileName.lastIndexOf("\\") >= 0 ){
+                file = new File( filePath +
+                        fileName.substring( fileName.lastIndexOf("\\"))) ;
+            }else{
+                file = new File( filePath +
+                        fileName.substring(fileName.lastIndexOf("\\")+1)) ;
+            }
+			try {
+				fi.write(file);
+			} catch (Exception e) {
+				//TODO logging
+			}
+        }
 	}
 }
