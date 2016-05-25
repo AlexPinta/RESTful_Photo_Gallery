@@ -3,6 +3,7 @@ package controller;
 import java.io.*;
 import java.util.Map;
 
+import helper.EndPoint;
 import helper.FileManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +24,9 @@ import javax.servlet.http.HttpServletRequest;
 public class GalleryController {
 	@Autowired
 	FileManager fileManager;
-	final String INDEX_PAGE = "index";
+	final public String INDEX_PAGE = "index";
 
-	@RequestMapping("/photo")
+	@RequestMapping(EndPoint.BASE_URL)
 	ModelAndView index() {
 		fileManager.clearFileQueue();
 		final ModelAndView modelAndView = new ModelAndView(INDEX_PAGE);
@@ -35,57 +36,54 @@ public class GalleryController {
 
 	/**
 	 */
-	@RequestMapping(value = "/photo/original", method = RequestMethod.GET)
+	@RequestMapping(value = EndPoint.RENDER_IMAGE_BY_ORIGINAL_SIZE, method = RequestMethod.GET)
 	public ModelAndView originalSize() {
 		final ModelAndView modelAndView = new ModelAndView(INDEX_PAGE);
 		setModelAttribute(modelAndView);
-		modelAndView.addObject("isOriginalSize", true);
+		modelAndView.addObject(ModelAttributePoint.ORIGINAL_IMAGE_SIZE, true);
 		return modelAndView;
 	}
 
 	/**
 	 */
-	@RequestMapping(value = "/photo/blackBackground", method = RequestMethod.GET)
+	@RequestMapping(value = EndPoint.SET_PAGE_BACKGROUND_COLOR, method = RequestMethod.GET)
 	public ModelAndView setPageBackground() {
 		final ModelAndView modelAndView = new ModelAndView(INDEX_PAGE);
 		setModelAttribute(modelAndView);
-		modelAndView.addObject("backgroundColor", "#FF0000");
+		modelAndView.addObject(ModelAttributePoint.BACKGROUND_COLOR, "#FF0000");
 		return modelAndView;
 	}
 
 	/**
 	 */
-	@RequestMapping(value = "/photo/wh/{size}", method = RequestMethod.GET)
-	public ModelAndView setPageBackground(@PathVariable String size) {
+	@RequestMapping(value = EndPoint.SET_IMAGE_SIZE, method = RequestMethod.GET)
+	public ModelAndView setImageSize(@PathVariable String size) {
 		final int HEIGHT_WIDTH_COUNT = 2;
 		final String SIZE_DELIMITER = "x";
 		final ModelAndView modelAndView = new ModelAndView(INDEX_PAGE);
-		
+		setModelAttribute(modelAndView);
+
 		final String[] sizeAttributes = size.split(SIZE_DELIMITER);
 		if (sizeAttributes.length == HEIGHT_WIDTH_COUNT) {
-			modelAndView.addObject("imageHeight", sizeAttributes[0]);
-			modelAndView.addObject("imageWidth", sizeAttributes[1]);
+			modelAndView.addObject(ModelAttributePoint.IMAGE_HEIGHT, sizeAttributes[0]);
+			modelAndView.addObject(ModelAttributePoint.IMAGE_WIDTH, sizeAttributes[1]);
 		}
-		setModelAttribute(modelAndView);
-		
 		return modelAndView;
 	}
 
 	/**
 	 */
-	@RequestMapping(value = "/photo/row/{imageCountInRow}", method = RequestMethod.GET)
+	@RequestMapping(value = EndPoint.SET_IMAGE_COUNT_IN_ROW, method = RequestMethod.GET)
 	public ModelAndView imageCountInRow(@PathVariable int imageCountInRow) {
 		final ModelAndView modelAndView = new ModelAndView(INDEX_PAGE);
-		
-		modelAndView.addObject("imageCountInRow", imageCountInRow);
 		setModelAttribute(modelAndView);
-		
+		modelAndView.addObject(ModelAttributePoint.IMAGE_COUNT_IN_ROW, imageCountInRow);
 		return modelAndView;
 	}
 
 
 
-	@RequestMapping(value = "/getImage/{fileHashCode}", method = RequestMethod.GET, produces = MediaType.IMAGE_PNG_VALUE)
+	@RequestMapping(value = EndPoint.GET_FILE_BY_HASH_CODE, method = RequestMethod.GET, produces = MediaType.IMAGE_PNG_VALUE)
 	@ResponseBody
 	public byte[] getImage(@PathVariable String fileHashCode) {
 		byte[] fileBytes = {0};
@@ -97,7 +95,7 @@ public class GalleryController {
 		return fileBytes;
 	}
 
-	@RequestMapping(value = "/photo/addImage", method = RequestMethod.POST)
+	@RequestMapping(value = EndPoint.UPLOAD_IMAGES, method = RequestMethod.POST)
 	public ModelAndView addPicture(HttpServletRequest request) {
 		final ModelAndView modelAndView = new ModelAndView(INDEX_PAGE);
 		final String FILES_PARAMETER = "uploadFolder";
@@ -144,15 +142,15 @@ public class GalleryController {
 		for (int i = DEFAULT_COUNT_IN_ROW-1; i >= 0; i--) {
 			intArr[DEFAULT_COUNT_IN_ROW-i-1] = i;
 		}
-		
-		
-		model.addObject("listFiles", fileManager.getFileQueue().toArray());
-		model.addObject("imageCount", fileManager.getFileQueue().size());
-		model.addObject("backgroundColor", "");
-		model.addObject("imageCountInRow", DEFAULT_COUNT_IN_ROW);
-		model.addObject("isOriginalSize", false);
-		model.addObject("imageHeight", DEFAULT_IMAGE_HEIGHT);
-		model.addObject("imageWidth", DEFAULT_IMAGE_WIDTH);
+
+
+		model.addObject(ModelAttributePoint.LIST_FILES, fileManager.getFileQueue().toArray());
+		model.addObject(ModelAttributePoint.IMAGE_COUNT, fileManager.getFileQueue().size());
+		model.addObject(ModelAttributePoint.BACKGROUND_COLOR, "");
+		model.addObject(ModelAttributePoint.IMAGE_COUNT_IN_ROW, DEFAULT_COUNT_IN_ROW);
+		model.addObject(ModelAttributePoint.ORIGINAL_IMAGE_SIZE, false);
+		model.addObject(ModelAttributePoint.IMAGE_HEIGHT, DEFAULT_IMAGE_HEIGHT);
+		model.addObject(ModelAttributePoint.IMAGE_WIDTH, DEFAULT_IMAGE_WIDTH);
 		model.addObject("intArr", intArr);
 	}
 }
