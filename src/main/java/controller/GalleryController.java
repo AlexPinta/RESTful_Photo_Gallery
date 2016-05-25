@@ -76,6 +76,7 @@ public class GalleryController {
 	@RequestMapping(value = "/photo/row/{imageCountInRow}", method = RequestMethod.GET)
 	public ModelAndView imageCountInRow(@PathVariable int imageCountInRow) {
 		final ModelAndView modelAndView = new ModelAndView(INDEX_PAGE);
+		
 		modelAndView.addObject("imageCountInRow", imageCountInRow);
 		setModelAttribute(modelAndView);
 		
@@ -122,12 +123,19 @@ public class GalleryController {
 	 */
 	private void setModelAttribute(ModelAndView model) {
 		int DEFAULT_COUNT_IN_ROW = 4;
-		final int DEFAULT_IMAGE_SIZE = 200;
+		int DEFAULT_IMAGE_HEIGHT = 200;
+		int DEFAULT_IMAGE_WIDTH = 200;
 		
 		if (!model.isEmpty()) {
 			Map<String, Object> mapModel = model.getModel();
 			if (mapModel.containsKey("imageCountInRow")) {
 				DEFAULT_COUNT_IN_ROW = (int) mapModel.get("imageCountInRow");
+			}
+			if (mapModel.containsKey("imageHeight")) {
+				DEFAULT_IMAGE_HEIGHT = Integer.valueOf((mapModel.get("imageHeight").toString()));
+			}
+			if (mapModel.containsKey("imageHeight")) {
+				DEFAULT_IMAGE_WIDTH = Integer.valueOf((mapModel.get("imageWidth").toString()));
 			}
 		}
 		
@@ -143,8 +151,8 @@ public class GalleryController {
 		model.addObject("backgroundColor", "");
 		model.addObject("imageCountInRow", DEFAULT_COUNT_IN_ROW);
 		model.addObject("isOriginalSize", false);
-		model.addObject("imageHeight", DEFAULT_IMAGE_SIZE);
-		model.addObject("imageWidth", DEFAULT_IMAGE_SIZE);
+		model.addObject("imageHeight", DEFAULT_IMAGE_HEIGHT);
+		model.addObject("imageWidth", DEFAULT_IMAGE_WIDTH);
 		model.addObject("intArr", intArr);
 	}
 }
