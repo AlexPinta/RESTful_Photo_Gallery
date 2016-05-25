@@ -15,7 +15,7 @@
             <div class="panel-heading"></div>
             <div class="panel-body ">
             <h4>Select your pic folder</h4>
-                <form action="/photo/addPicture" method="post" enctype="multipart/form-data">
+                <form action="/photo/addImage" method="post" enctype="multipart/form-data">
                     <div class="form-inline">
                         <div class="form-group">
                             <input type="file" name="uploadFolder" id="uploadFolder" webkitdirectory="" directory="" multiple=""/>
@@ -38,10 +38,10 @@
 		<p/>
 		<tr th:each="fileitem,iterationStatus  : ${listFiles}">
 			# <td th:text="${iterationStatus.count}">1</td>
-			| filename: <td th:text="${fileitem.name}">name</td>
-			| filepath: <td th:text="${fileitem.getPath()}">name</td>
+			| filename: <td th:text="${fileitem.getFile().name}">name</td>
+			| filepath: <td th:text="${fileitem.getFile().getPath()}">name</td>
 			<p/>
-			<!-- <img alt="" th:src="@{/getImage/${fileitem.getPath()}" /> /> -->
+            <img alt="" th:src="@{/getImage/{hashCode}(hashCode=${fileitem.getFileHashCode()})}"/>
 		</tr>
 		
         <!--<tr th:each="file : ${fileList}">-->
