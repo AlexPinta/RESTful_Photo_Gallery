@@ -41,7 +41,7 @@
 			| filename: <td th:text="${fileitem.name}">name</td>
 			| filepath: <td th:text="${fileitem.getPath()}">name</td>
 			<p/>
-			<img alt="" th:src="@{/getImage/${fileitem.getPath()}" th:attr="width=@{imageWidth}" th:attr="height=@{imageHeight}"/> />
+			<!-- <img alt="" th:src="@{/getImage/${fileitem.getPath()}" /> /> -->
 		</tr>
 		
         <!--<tr th:each="file : ${fileList}">-->

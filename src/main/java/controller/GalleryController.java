@@ -60,7 +60,6 @@ public class GalleryController {
 				responseEntity = new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
 				//TODO logging
 			}
-
 		}
 		
 		setModelAttribute(model);
