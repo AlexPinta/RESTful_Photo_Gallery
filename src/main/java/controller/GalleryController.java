@@ -1,3 +1,13 @@
+/**
+* Controller classes used to manage users requests
+* <p>
+* These classes contain functionality to get request from client, process it and create response
+* </p>
+*
+* @since 1.0
+* @author Alex Pinta, Oleh Pinta
+* @version 1.0
+*/
 package controller;
 
 import java.io.*;
@@ -17,15 +27,21 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * informs Spring that it should convert the objects returned from the controller methods
- * into JSON or XML responses
- */
+* The GalleryController class implements managing requests and creating response.
+* You can invoke different REST functionality by using different url
+* 
+* @author  Alex Pinta, Oleh Pinta
+*/
 @RestController
 public class GalleryController {
 	@Autowired
 	FileManager fileManager;
 	final public String INDEX_PAGE = "index";
 
+	/**
+     * This method is used to open main page.
+     * It initialize needed parameters and send them through the response
+     */
 	@RequestMapping(EndPoint.BASE_URL)
 	ModelAndView index() {
 		fileManager.clearFileQueue();
@@ -35,7 +51,9 @@ public class GalleryController {
 	}
 
 	/**
-	 */
+     * This method is used to open gallery page with the photos with the original size.
+     * It initialize needed parameters and send them through the response
+     */
 	@RequestMapping(value = EndPoint.RENDER_IMAGE_BY_ORIGINAL_SIZE, method = RequestMethod.GET)
 	public ModelAndView originalSize() {
 		final ModelAndView modelAndView = new ModelAndView(INDEX_PAGE);
@@ -45,7 +63,9 @@ public class GalleryController {
 	}
 
 	/**
-	 */
+     * This method is used to open gallery page with the photos on the black background.
+     * It initialize needed parameters and send them through the response
+     */
 	@RequestMapping(value = EndPoint.SET_PAGE_BACKGROUND_COLOR, method = RequestMethod.GET)
 	public ModelAndView setPageBackground() {
 		final ModelAndView modelAndView = new ModelAndView(INDEX_PAGE);
@@ -55,7 +75,9 @@ public class GalleryController {
 	}
 
 	/**
-	 */
+     * This method is used to open gallery page with the photos with the given size.
+     * It initialize needed parameters and send them through the response
+     */
 	@RequestMapping(value = EndPoint.SET_IMAGE_SIZE, method = RequestMethod.GET)
 	public ModelAndView setImageSize(@PathVariable String size) {
 		final int HEIGHT_WIDTH_COUNT = 2;
@@ -72,7 +94,9 @@ public class GalleryController {
 	}
 
 	/**
-	 */
+     * This method is used to open gallery page with the photos with the original size.
+     * It initialize needed parameters and send them through the response
+     */
 	@RequestMapping(value = EndPoint.SET_IMAGE_COUNT_IN_ROW, method = RequestMethod.GET)
 	public ModelAndView imageCountInRow(@PathVariable int imageCountInRow) {
 		final ModelAndView modelAndView = new ModelAndView(INDEX_PAGE);
@@ -81,8 +105,10 @@ public class GalleryController {
 		return modelAndView;
 	}
 
-
-
+	/**
+     * This method is used to retrieve the picture from the FileProperty.
+     * It converts picture to the byte array and return this array
+     */
 	@RequestMapping(value = EndPoint.GET_FILE_BY_HASH_CODE, method = RequestMethod.GET, produces = MediaType.IMAGE_PNG_VALUE)
 	@ResponseBody
 	public byte[] getImage(@PathVariable String fileHashCode) {
@@ -95,6 +121,10 @@ public class GalleryController {
 		return fileBytes;
 	}
 
+	/**
+     * This method is used to upload .png pictures from the client to server.
+     * It initialize needed parameters and send them through the response
+     */
 	@RequestMapping(value = EndPoint.UPLOAD_IMAGES, method = RequestMethod.POST)
 	public ModelAndView addPicture(HttpServletRequest request) {
 		final ModelAndView modelAndView = new ModelAndView(INDEX_PAGE);
