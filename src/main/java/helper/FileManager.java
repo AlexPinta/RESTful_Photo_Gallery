@@ -137,8 +137,9 @@ public class FileManager {
          * @param buffer Buffer is used to generate hash MD5
          */
         private void generateHashCode(byte[] buffer) {
+            final String ENCODING_METHOD = "MD5";
             try {
-                final byte[] md5Transformation = MessageDigest.getInstance("MD5").digest(buffer);
+                final byte[] md5Transformation = MessageDigest.getInstance(ENCODING_METHOD).digest(buffer);
                 this.fileHashCode = DatatypeConverter.printHexBinary(md5Transformation);
             } catch (NoSuchAlgorithmException e) {
                 this.fileHashCode = "";
