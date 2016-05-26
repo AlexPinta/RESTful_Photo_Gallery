@@ -68,11 +68,13 @@ public class GalleryControllerTest {
 
     @Test
     public void testsetImageSize() throws Exception {
-        this.mockMvc.perform(get(EndPoints.SET_IMAGE_SIZE.replace("{size}", "60x50")))
+        final String TEST_SIZE = "60x50";
+        final String[] PARAMETERS = TEST_SIZE.split("x");
+        this.mockMvc.perform(get(EndPoints.SET_IMAGE_SIZE.replace("{size}", TEST_SIZE)))
                 .andExpect(status().isOk())
                 .andExpect(forwardedUrl(galleryController.INDEX_PAGE))
-                .andExpect(model().attribute(ModelAttributePoint.IMAGE_HEIGHT, "60"))
-                .andExpect(model().attribute(ModelAttributePoint.IMAGE_WIDTH, "50"));
+                .andExpect(model().attribute(ModelAttributePoint.IMAGE_HEIGHT, PARAMETERS[0]))
+                .andExpect(model().attribute(ModelAttributePoint.IMAGE_WIDTH, PARAMETERS[1]));
     }
 
     @Test
