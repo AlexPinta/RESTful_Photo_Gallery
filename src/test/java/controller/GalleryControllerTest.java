@@ -5,18 +5,13 @@ import helper.FileManager;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
-import static org.mockito.Mockito.*;
 import org.mockito.MockitoAnnotations;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import org.mockito.Spy;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.*;
@@ -68,11 +63,13 @@ public class GalleryControllerTest {
 
     @Test
     public void testsetImageSize() throws Exception {
-        this.mockMvc.perform(get(EndPoints.SET_IMAGE_SIZE.replace("{size}", "60x50")))
+        final String TEST_SIZE = "60x50";
+        final String[] PARAMETERS = TEST_SIZE.split("x");
+        this.mockMvc.perform(get(EndPoints.SET_IMAGE_SIZE.replace("{size}", TEST_SIZE)))
                 .andExpect(status().isOk())
                 .andExpect(forwardedUrl(galleryController.INDEX_PAGE))
-                .andExpect(model().attribute(ModelAttributePoint.IMAGE_HEIGHT, "60"))
-                .andExpect(model().attribute(ModelAttributePoint.IMAGE_WIDTH, "50"));
+                .andExpect(model().attribute(ModelAttributePoint.IMAGE_HEIGHT, PARAMETERS[0]))
+                .andExpect(model().attribute(ModelAttributePoint.IMAGE_WIDTH, PARAMETERS[1]));
     }
 
     @Test
