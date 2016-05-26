@@ -23,7 +23,7 @@ public class FileManager {
     private final byte[] BYTES = new byte[1024];
     private final int START_OFFSET = 0;
 
-    @Value("${user.home.temp}") String USER_FOLDER;
+    @Value("${user.home.temp}") public String USER_FOLDER;
     private Queue<FileProperty> fileQueue;
 
     public FileManager() {
@@ -103,7 +103,7 @@ public class FileManager {
                 break;
             }
         }
-        if (fileProperty != null) {
+        if (fileProperty == null) {
             logger.warn("File " + hashCode + " wasn\'t deleted due to it wasn\'t found.");
             return;
         }
