@@ -47,8 +47,8 @@ public class GalleryController {
 	@RequestMapping(value = EndPoints.RENDER_IMAGE_BY_ORIGINAL_SIZE, method = RequestMethod.GET)
 	public ModelAndView originalSize() {
 		final ModelAndView modelAndView = new ModelAndView(INDEX_PAGE);
-		modelAndView.addObject(ModelAttributePoint.ORIGINAL_IMAGE_SIZE, true);
 		setModelAttribute(modelAndView);
+		modelAndView.addObject(ModelAttributePoint.ORIGINAL_IMAGE_SIZE, true);
 		return modelAndView;
 	}
 

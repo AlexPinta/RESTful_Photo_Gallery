@@ -125,7 +125,7 @@ public class FileManager {
     * 
     * @author  Alex Pinta, Oleh Pinta
     */
-    class FileProperty {
+    public class FileProperty {
         private File file;
         private String fileHashCode;
         private FileProperty(File file) {
