@@ -17,7 +17,6 @@ import java.io.FileInputStream;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-
 public class GalleryControllerTest {
 
     @Spy
