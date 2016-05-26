@@ -9,14 +9,17 @@ import static org.mockito.Mockito.*;
 import org.mockito.MockitoAnnotations;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import org.mockito.Spy;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.Queue;
+import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 
@@ -101,4 +104,17 @@ public class GalleryControllerTest {
 
         fileManager.deleteFile(fileProperty.getFileHashCode());
     }
+
+//    @Test
+//    public void testAddPicture() throws Exception {
+//        final String FILES_PARAMETER = "uploadFolder";
+//        MultiValueMap<Object, Object> multiValueMap = new LinkedMultiValueMap<>();
+//
+//        multiValueMap.add(FILES_PARAMETER, );
+//        this.mockMvc.perform(post(EndPoints.UPLOAD_IMAGES)
+//                .flashAttr(FILES_PARAMETER, ))
+//                .andExpect(status().isOk())
+//                .andExpect(forwardedUrl(galleryController.INDEX_PAGE));
+//
+//    }
 }
