@@ -39,8 +39,8 @@ public class GalleryController {
 	@RequestMapping(value = EndPoint.RENDER_IMAGE_BY_ORIGINAL_SIZE, method = RequestMethod.GET)
 	public ModelAndView originalSize() {
 		final ModelAndView modelAndView = new ModelAndView(INDEX_PAGE);
-		setModelAttribute(modelAndView);
 		modelAndView.addObject(ModelAttributePoint.ORIGINAL_IMAGE_SIZE, true);
+		setModelAttribute(modelAndView);
 		return modelAndView;
 	}
 
@@ -50,7 +50,7 @@ public class GalleryController {
 	public ModelAndView setPageBackground() {
 		final ModelAndView modelAndView = new ModelAndView(INDEX_PAGE);
 		setModelAttribute(modelAndView);
-		modelAndView.addObject(ModelAttributePoint.BACKGROUND_COLOR, "#FF0000");
+		modelAndView.addObject(ModelAttributePoint.BACKGROUND_COLOR, "black");
 		return modelAndView;
 	}
 
@@ -120,37 +120,41 @@ public class GalleryController {
 	 * parameter model we change this parameter by setting attributes
 	 */
 	private void setModelAttribute(ModelAndView model) {
-		int DEFAULT_COUNT_IN_ROW = 4;
-		int DEFAULT_IMAGE_HEIGHT = 200;
-		int DEFAULT_IMAGE_WIDTH = 200;
+		int countInRow = 4;
+		int imageHeight = 200;
+		int imageWidth = 200;
+		boolean isOriginalSize = false;
 		
 		if (!model.isEmpty()) {
 			Map<String, Object> mapModel = model.getModel();
-			if (mapModel.containsKey("imageCountInRow")) {
-				DEFAULT_COUNT_IN_ROW = (int) mapModel.get("imageCountInRow");
+			if (mapModel.containsKey(ModelAttributePoint.IMAGE_COUNT_IN_ROW)) {
+				countInRow = (int) mapModel.get(ModelAttributePoint.IMAGE_COUNT_IN_ROW);
 			}
-			if (mapModel.containsKey("imageHeight")) {
-				DEFAULT_IMAGE_HEIGHT = Integer.valueOf((mapModel.get("imageHeight").toString()));
+			if (mapModel.containsKey(ModelAttributePoint.IMAGE_HEIGHT)) {
+				imageHeight = Integer.valueOf((mapModel.get(ModelAttributePoint.IMAGE_HEIGHT).toString()));
 			}
-			if (mapModel.containsKey("imageHeight")) {
-				DEFAULT_IMAGE_WIDTH = Integer.valueOf((mapModel.get("imageWidth").toString()));
+			if (mapModel.containsKey(ModelAttributePoint.IMAGE_WIDTH)) {
+				imageWidth = Integer.valueOf((mapModel.get(ModelAttributePoint.IMAGE_WIDTH).toString()));
+			}
+			if (mapModel.containsKey(ModelAttributePoint.ORIGINAL_IMAGE_SIZE)) {
+				isOriginalSize = Boolean.valueOf((mapModel.get(ModelAttributePoint.ORIGINAL_IMAGE_SIZE).toString()));
 			}
 		}
 		
-		int[] intArr = new int[DEFAULT_COUNT_IN_ROW];
+		int[] intArr = new int[countInRow];
 		
-		for (int i = DEFAULT_COUNT_IN_ROW-1; i >= 0; i--) {
-			intArr[DEFAULT_COUNT_IN_ROW-i-1] = i;
+		for (int i = countInRow-1; i >= 0; i--) {
+			intArr[countInRow-i-1] = i;
 		}
 
 
 		model.addObject(ModelAttributePoint.LIST_FILES, fileManager.getFileQueue().toArray());
 		model.addObject(ModelAttributePoint.IMAGE_COUNT, fileManager.getFileQueue().size());
 		model.addObject(ModelAttributePoint.BACKGROUND_COLOR, "");
-		model.addObject(ModelAttributePoint.IMAGE_COUNT_IN_ROW, DEFAULT_COUNT_IN_ROW);
-		model.addObject(ModelAttributePoint.ORIGINAL_IMAGE_SIZE, false);
-		model.addObject(ModelAttributePoint.IMAGE_HEIGHT, DEFAULT_IMAGE_HEIGHT);
-		model.addObject(ModelAttributePoint.IMAGE_WIDTH, DEFAULT_IMAGE_WIDTH);
+		model.addObject(ModelAttributePoint.IMAGE_COUNT_IN_ROW, countInRow);
+		model.addObject(ModelAttributePoint.ORIGINAL_IMAGE_SIZE, isOriginalSize);
+		model.addObject(ModelAttributePoint.IMAGE_HEIGHT, imageHeight);
+		model.addObject(ModelAttributePoint.IMAGE_WIDTH, imageWidth);
 		model.addObject("intArr", intArr);
 	}
 }
