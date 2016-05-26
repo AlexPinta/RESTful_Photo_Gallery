@@ -1,15 +1,6 @@
-/**
-* Helper classes used to work with files. It also contains all ulr to send request to the controller
-* <p>
-* These classes contain the some CRUD with files and detecting classes in the package functionality
-* </p>
-*
-* @since 1.0
-* @author Alex Pinta, Oleh Pinta
-* @version 1.0
-*/
 package helper;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -28,6 +19,7 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 */
 @Component
 public class FileManager {
+    private static Logger logger = Logger.getRootLogger();
     private final byte[] BYTES = new byte[1024];
     private final int START_OFFSET = 0;
 
@@ -44,8 +36,8 @@ public class FileManager {
 
     /**
      * This method is used to save file on server.
-     * @param stream. It reads photo by bytes from stream
-     * @param pathFile. It writes bytes of photo to the file with path = pathFile
+     * @param stream It reads photo by bytes from stream
+     * @param pathFile It writes bytes of photo to the file with path = pathFile
      */
     public void saveFile(InputStream stream, String pathFile) throws IOException {
         int read;
@@ -71,7 +63,7 @@ public class FileManager {
 
     /**
      * This method is used to retrieve file from cache.
-     * @param hashCode. This is the unique value of the photo in the cache 
+     * @param hashCode This is the unique value of the photo in the cache
      */
     public byte[] retrieveFile(String hashCode) throws IOException {
         final Iterator<FileProperty> iterator = this.fileQueue.iterator();
@@ -98,6 +90,32 @@ public class FileManager {
         return fileBytes;
    }
 
+    /**
+     * This method is used to delete file from your local machine.
+     * @param hashCode Contains hashcode (MD5) of the file to be deleted
+     */
+    public void deleteFile(final String hashCode) {
+        final Iterator<FileProperty> iterator = this.fileQueue.iterator();
+        FileProperty fileProperty = null;
+        while (iterator.hasNext()) {
+            fileProperty = iterator.next();
+            if (fileProperty.getFileHashCode().equals(hashCode)) {
+                break;
+            }
+        }
+        if (fileProperty != null) {
+            logger.warn("File " + hashCode + " wasn\'t deleted due to it wasn\'t found.");
+            return;
+        }
+        try {
+            fileProperty.getFile().deleteOnExit();
+            getFileQueue().remove(fileProperty);
+            logger.info("File " + fileProperty.getFile().getPath() + " deleted successfully.");
+        } catch (SecurityException e) {
+            logger.error("Error while deleting a File " + fileProperty.getFile().getPath() + ".");
+        }
+    }
+
     public void clearFileQueue() {
         this.fileQueue.clear();
     }
@@ -116,7 +134,7 @@ public class FileManager {
 
         /**
          * This method is used to generate unique value for the file property.
-         * @param buffer. Buffer is used to generate hash MD5
+         * @param buffer Buffer is used to generate hash MD5
          */
         private void generateHashCode(byte[] buffer) {
             try {

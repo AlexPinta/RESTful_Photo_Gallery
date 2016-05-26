@@ -1,19 +1,9 @@
-/**
-* Controller classes used to manage users requests
-* <p>
-* These classes contain functionality to get request from client, process it and create response
-* </p>
-*
-* @since 1.0
-* @author Alex Pinta, Oleh Pinta
-* @version 1.0
-*/
 package controller;
 
 import java.io.*;
 import java.util.Map;
 
-import helper.EndPoint;
+import helper.EndPoints;
 import helper.FileManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +32,7 @@ public class GalleryController {
      * This method is used to open main page.
      * It initialize needed parameters and send them through the response
      */
-	@RequestMapping(EndPoint.BASE_URL)
+	@RequestMapping(EndPoints.BASE_URL)
 	ModelAndView index() {
 		fileManager.clearFileQueue();
 		final ModelAndView modelAndView = new ModelAndView(INDEX_PAGE);
@@ -54,7 +44,7 @@ public class GalleryController {
      * This method is used to open gallery page with the photos with the original size.
      * It initialize needed parameters and send them through the response
      */
-	@RequestMapping(value = EndPoint.RENDER_IMAGE_BY_ORIGINAL_SIZE, method = RequestMethod.GET)
+	@RequestMapping(value = EndPoints.RENDER_IMAGE_BY_ORIGINAL_SIZE, method = RequestMethod.GET)
 	public ModelAndView originalSize() {
 		final ModelAndView modelAndView = new ModelAndView(INDEX_PAGE);
 		modelAndView.addObject(ModelAttributePoint.ORIGINAL_IMAGE_SIZE, true);
@@ -66,7 +56,7 @@ public class GalleryController {
      * This method is used to open gallery page with the photos on the black background.
      * It initialize needed parameters and send them through the response
      */
-	@RequestMapping(value = EndPoint.SET_PAGE_BACKGROUND_COLOR, method = RequestMethod.GET)
+	@RequestMapping(value = EndPoints.SET_PAGE_BACKGROUND_COLOR, method = RequestMethod.GET)
 	public ModelAndView setPageBackground() {
 		final ModelAndView modelAndView = new ModelAndView(INDEX_PAGE);
 		setModelAttribute(modelAndView);
@@ -78,7 +68,7 @@ public class GalleryController {
      * This method is used to open gallery page with the photos with the given size.
      * It initialize needed parameters and send them through the response
      */
-	@RequestMapping(value = EndPoint.SET_IMAGE_SIZE, method = RequestMethod.GET)
+	@RequestMapping(value = EndPoints.SET_IMAGE_SIZE, method = RequestMethod.GET)
 	public ModelAndView setImageSize(@PathVariable String size) {
 		final int HEIGHT_WIDTH_COUNT = 2;
 		final String SIZE_DELIMITER = "x";
@@ -97,7 +87,7 @@ public class GalleryController {
      * This method is used to open gallery page with the photos with the original size.
      * It initialize needed parameters and send them through the response
      */
-	@RequestMapping(value = EndPoint.SET_IMAGE_COUNT_IN_ROW, method = RequestMethod.GET)
+	@RequestMapping(value = EndPoints.SET_IMAGE_COUNT_IN_ROW, method = RequestMethod.GET)
 	public ModelAndView imageCountInRow(@PathVariable int imageCountInRow) {
 		final ModelAndView modelAndView = new ModelAndView(INDEX_PAGE);
 		modelAndView.addObject(ModelAttributePoint.IMAGE_COUNT_IN_ROW, imageCountInRow);
@@ -109,7 +99,7 @@ public class GalleryController {
      * This method is used to retrieve the picture from the FileProperty.
      * It converts picture to the byte array and return this array
      */
-	@RequestMapping(value = EndPoint.GET_FILE_BY_HASH_CODE, method = RequestMethod.GET, produces = MediaType.IMAGE_PNG_VALUE)
+	@RequestMapping(value = EndPoints.GET_FILE_BY_HASH_CODE, method = RequestMethod.GET, produces = MediaType.IMAGE_PNG_VALUE)
 	@ResponseBody
 	public byte[] getImage(@PathVariable String fileHashCode) {
 		byte[] fileBytes = {0};
@@ -125,7 +115,7 @@ public class GalleryController {
      * This method is used to upload .png pictures from the client to server.
      * It initialize needed parameters and send them through the response
      */
-	@RequestMapping(value = EndPoint.UPLOAD_IMAGES, method = RequestMethod.POST)
+	@RequestMapping(value = EndPoints.UPLOAD_IMAGES, method = RequestMethod.POST)
 	public ModelAndView addPicture(HttpServletRequest request) {
 		final ModelAndView modelAndView = new ModelAndView(INDEX_PAGE);
 		final String FILES_PARAMETER = "uploadFolder";

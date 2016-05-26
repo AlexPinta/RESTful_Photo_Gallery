@@ -1,13 +1,3 @@
-/**
-* Main class used to start application
-* <p>
-* These classes contain the entry point
-* </p>
-*
-* @since 1.0
-* @author Alex Pinta, Oleh Pinta
-* @version 1.0
-*/
 package bootstrap;
 
 import org.springframework.boot.SpringApplication;

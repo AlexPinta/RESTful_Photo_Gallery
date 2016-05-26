@@ -1,11 +1,11 @@
 package helper;
 
 /**
-* The EndPoint interface contains all urls, you could invoke as a user
+* The EndPoints interface contains all urls, you could invoke as a user
 * 
 * @author  Alex Pinta, Oleh Pinta
 */
-public interface EndPoint {
+public interface EndPoints {
     String BASE_URL = "/photo";
     String RENDER_IMAGE_BY_ORIGINAL_SIZE = BASE_URL + "/original";
     String SET_PAGE_BACKGROUND_COLOR = BASE_URL + "/blackbackground";

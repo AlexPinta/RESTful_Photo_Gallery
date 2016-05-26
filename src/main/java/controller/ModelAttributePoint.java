@@ -1,13 +1,3 @@
-/**
-* Controller classes used to manage users requests
-* <p>
-* These classes contain functionality to get request from client, process it and create response
-* </p>
-*
-* @since 1.0
-* @author Alex Pinta, Oleh Pinta
-* @version 1.0
-*/
 package controller;
 
 /**
