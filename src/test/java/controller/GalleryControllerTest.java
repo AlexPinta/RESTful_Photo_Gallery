@@ -104,4 +104,17 @@ public class GalleryControllerTest {
 
         fileManager.deleteFile(fileProperty.getFileHashCode());
     }
+
+//    @Test
+//    public void testAddPicture() throws Exception {
+//        final String FILES_PARAMETER = "uploadFolder";
+//        MultiValueMap<Object, Object> multiValueMap = new LinkedMultiValueMap<>();
+//
+//        multiValueMap.add(FILES_PARAMETER, );
+//        this.mockMvc.perform(post(EndPoints.UPLOAD_IMAGES)
+//                .flashAttr(FILES_PARAMETER, ))
+//                .andExpect(status().isOk())
+//                .andExpect(forwardedUrl(galleryController.INDEX_PAGE));
+//
+//    }
 }
