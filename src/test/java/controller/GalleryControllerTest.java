@@ -104,5 +104,4 @@ public class GalleryControllerTest {
 
         fileManager.deleteFile(fileProperty.getFileHashCode());
     }
-
 }
