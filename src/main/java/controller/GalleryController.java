@@ -6,6 +6,7 @@ import java.util.Map;
 import helper.EndPoints;
 import helper.FileManager;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.util.MultiValueMap;
@@ -28,6 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 */
 @RestController
 public class GalleryController {
+	final static Logger logger = Logger.getLogger(GalleryController.class);
 	@Autowired
 	FileManager fileManager;
 	final public String INDEX_PAGE = "index";
@@ -109,8 +111,9 @@ public class GalleryController {
 		byte[] fileBytes = {0};
 		try {
 			fileBytes = fileManager.retrieveFile(fileHashCode);
+			
 		} catch (IOException e) {
-			//TODO logging
+			logger.error("Can't retrieve file by hash code : " + fileHashCode, e);
 		}
 		return fileBytes;
 	}
@@ -132,7 +135,7 @@ public class GalleryController {
 					fileManager.saveFile(file.getInputStream(), file.getOriginalFilename());
 				}
 			} catch (IOException e) {
-				//TODO logging
+				logger.error("Can't save file on server: " + file.getOriginalFilename(), e);
 			}
 		}
 		setModelAttribute(modelAndView);
@@ -154,23 +157,13 @@ public class GalleryController {
 			if (mapModel.containsKey(ModelAttributePoint.IMAGE_COUNT_IN_ROW)) {
 				countInRow = (int) mapModel.get(ModelAttributePoint.IMAGE_COUNT_IN_ROW);
 			}
-			if (mapModel.containsKey(ModelAttributePoint.IMAGE_HEIGHT)) {
-				imageHeight = Integer.valueOf((mapModel.get(ModelAttributePoint.IMAGE_HEIGHT).toString()));
-			}
-			if (mapModel.containsKey(ModelAttributePoint.IMAGE_WIDTH)) {
-				imageWidth = Integer.valueOf((mapModel.get(ModelAttributePoint.IMAGE_WIDTH).toString()));
-			}
-			if (mapModel.containsKey(ModelAttributePoint.ORIGINAL_IMAGE_SIZE)) {
-				isOriginalSize = Boolean.valueOf((mapModel.get(ModelAttributePoint.ORIGINAL_IMAGE_SIZE).toString()));
-			}
 		}
 		
-		int[] intArr = new int[countInRow];
+		int[] imagesInRow = new int[countInRow];
 		
 		for (int i = countInRow-1; i >= 0; i--) {
-			intArr[countInRow-i-1] = i;
+			imagesInRow[countInRow-i-1] = i;
 		}
-
 
 		model.addObject(ModelAttributePoint.LIST_FILES, fileManager.getFileQueue().toArray());
 		model.addObject(ModelAttributePoint.IMAGE_COUNT, fileManager.getFileQueue().size());
@@ -179,6 +172,6 @@ public class GalleryController {
 		model.addObject(ModelAttributePoint.ORIGINAL_IMAGE_SIZE, isOriginalSize);
 		model.addObject(ModelAttributePoint.IMAGE_HEIGHT, imageHeight);
 		model.addObject(ModelAttributePoint.IMAGE_WIDTH, imageWidth);
-		model.addObject("intArr", intArr);
+		model.addObject(ModelAttributePoint.IMAGES_IN_ROW, imagesInRow);
 	}
 }

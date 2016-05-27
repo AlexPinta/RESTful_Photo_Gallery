@@ -13,4 +13,5 @@ public interface ModelAttributePoint {
     String ORIGINAL_IMAGE_SIZE = "isOriginalSize";
     String IMAGE_HEIGHT = "imageHeight";
     String IMAGE_WIDTH = "imageWidth";
+    String IMAGES_IN_ROW = "imagesInRow";
 }
