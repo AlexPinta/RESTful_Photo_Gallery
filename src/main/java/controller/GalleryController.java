@@ -1,7 +1,9 @@
 package controller;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Map;
+import java.util.stream.IntStream;
 
 import helper.EndPoints;
 import helper.FileManager;
@@ -50,9 +52,12 @@ public class GalleryController {
      */
 	@RequestMapping(value = EndPoints.RENDER_IMAGE_BY_ORIGINAL_SIZE, method = RequestMethod.GET)
 	public ModelAndView originalSize() {
+		final String ORIGINAL_IMAGE_SIZE = "auto";
 		final ModelAndView modelAndView = new ModelAndView(INDEX_PAGE);
 		setModelAttribute(modelAndView);
-		modelAndView.addObject(ModelAttributePoint.ORIGINAL_IMAGE_SIZE, true);
+		modelAndView.addObject(ModelAttributePoint.IMAGE_HEIGHT, ORIGINAL_IMAGE_SIZE);
+		modelAndView.addObject(ModelAttributePoint.IMAGE_WIDTH, ORIGINAL_IMAGE_SIZE);
+//		modelAndView.addObject(ModelAttributePoint.ORIGINAL_IMAGE_SIZE, true);
 		return modelAndView;
 	}
 
@@ -73,17 +78,11 @@ public class GalleryController {
      * It initialize needed parameters and send them through the response
      */
 	@RequestMapping(value = EndPoints.SET_IMAGE_SIZE, method = RequestMethod.GET)
-	public ModelAndView setImageSize(@PathVariable String size) {
-		final int HEIGHT_WIDTH_COUNT = 2;
-		final String SIZE_DELIMITER = "x";
+	public ModelAndView setImageSize(@PathVariable String height, @PathVariable String width) {
 		final ModelAndView modelAndView = new ModelAndView(INDEX_PAGE);
 		setModelAttribute(modelAndView);
-
-		final String[] sizeAttributes = size.split(SIZE_DELIMITER);
-		if (sizeAttributes.length == HEIGHT_WIDTH_COUNT) {
-			modelAndView.addObject(ModelAttributePoint.IMAGE_HEIGHT, sizeAttributes[0]);
-			modelAndView.addObject(ModelAttributePoint.IMAGE_WIDTH, sizeAttributes[1]);
-		}
+		modelAndView.addObject(ModelAttributePoint.IMAGE_HEIGHT, height);
+		modelAndView.addObject(ModelAttributePoint.IMAGE_WIDTH, width);
 		return modelAndView;
 	}
 
@@ -145,40 +144,27 @@ public class GalleryController {
 	 */
 	private void setModelAttribute(ModelAndView model) {
 		int countInRow = 4;
-		int imageHeight = 200;
-		int imageWidth = 200;
-		boolean isOriginalSize = false;
-		
+		final int IMAGE_HEIGHT = 200;
+		final int IMAGE_WIDTH = 200;
+
 		if (!model.isEmpty()) {
 			Map<String, Object> mapModel = model.getModel();
 			if (mapModel.containsKey(ModelAttributePoint.IMAGE_COUNT_IN_ROW)) {
 				countInRow = (int) mapModel.get(ModelAttributePoint.IMAGE_COUNT_IN_ROW);
 			}
-			if (mapModel.containsKey(ModelAttributePoint.IMAGE_HEIGHT)) {
-				imageHeight = Integer.valueOf((mapModel.get(ModelAttributePoint.IMAGE_HEIGHT).toString()));
-			}
-			if (mapModel.containsKey(ModelAttributePoint.IMAGE_WIDTH)) {
-				imageWidth = Integer.valueOf((mapModel.get(ModelAttributePoint.IMAGE_WIDTH).toString()));
-			}
-			if (mapModel.containsKey(ModelAttributePoint.ORIGINAL_IMAGE_SIZE)) {
-				isOriginalSize = Boolean.valueOf((mapModel.get(ModelAttributePoint.ORIGINAL_IMAGE_SIZE).toString()));
-			}
-		}
-		
-		int[] intArr = new int[countInRow];
-		
-		for (int i = countInRow-1; i >= 0; i--) {
-			intArr[countInRow-i-1] = i;
 		}
 
+		int[] arrayForRendering = new int[countInRow];
+		for (int i = countInRow-1; i >= 0; i--) {
+			arrayForRendering[countInRow-i-1] = i;
+		}
 
 		model.addObject(ModelAttributePoint.LIST_FILES, fileManager.getFileQueue().toArray());
 		model.addObject(ModelAttributePoint.IMAGE_COUNT, fileManager.getFileQueue().size());
 		model.addObject(ModelAttributePoint.BACKGROUND_COLOR, "");
 		model.addObject(ModelAttributePoint.IMAGE_COUNT_IN_ROW, countInRow);
-		model.addObject(ModelAttributePoint.ORIGINAL_IMAGE_SIZE, isOriginalSize);
-		model.addObject(ModelAttributePoint.IMAGE_HEIGHT, imageHeight);
-		model.addObject(ModelAttributePoint.IMAGE_WIDTH, imageWidth);
-		model.addObject("intArr", intArr);
+		model.addObject(ModelAttributePoint.IMAGE_HEIGHT, IMAGE_HEIGHT);
+		model.addObject(ModelAttributePoint.IMAGE_WIDTH, IMAGE_WIDTH);
+		model.addObject(ModelAttributePoint.ARRAY_FOR_RENDERING, arrayForRendering);
 	}
 }

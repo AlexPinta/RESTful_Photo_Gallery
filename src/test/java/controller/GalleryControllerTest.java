@@ -46,10 +46,12 @@ public class GalleryControllerTest {
 
     @Test
     public void testOriginalSize() throws Exception {
+        final String ORIGINAL_IMAGE_SIZE = "auto";
         this.mockMvc.perform(get(EndPoints.RENDER_IMAGE_BY_ORIGINAL_SIZE))
                 .andExpect(status().isOk())
                 .andExpect(forwardedUrl(galleryController.INDEX_PAGE))
-                .andExpect(model().attribute(ModelAttributePoint.ORIGINAL_IMAGE_SIZE, true));
+                .andExpect(model().attribute(ModelAttributePoint.IMAGE_HEIGHT, ORIGINAL_IMAGE_SIZE))
+                .andExpect(model().attribute(ModelAttributePoint.IMAGE_WIDTH, ORIGINAL_IMAGE_SIZE));
     }
 
     @Test
@@ -63,12 +65,11 @@ public class GalleryControllerTest {
     @Test
     public void testsetImageSize() throws Exception {
         final String TEST_SIZE = "60x50";
-        final String[] PARAMETERS = TEST_SIZE.split("x");
-        this.mockMvc.perform(get(EndPoints.SET_IMAGE_SIZE.replace("{size}", TEST_SIZE)))
+        this.mockMvc.perform(get(EndPoints.SET_IMAGE_SIZE.replace("{height}x{width}", TEST_SIZE)))
                 .andExpect(status().isOk())
                 .andExpect(forwardedUrl(galleryController.INDEX_PAGE))
-                .andExpect(model().attribute(ModelAttributePoint.IMAGE_HEIGHT, PARAMETERS[0]))
-                .andExpect(model().attribute(ModelAttributePoint.IMAGE_WIDTH, PARAMETERS[1]));
+                .andExpect(model().attribute(ModelAttributePoint.IMAGE_HEIGHT, "60"))
+                .andExpect(model().attribute(ModelAttributePoint.IMAGE_WIDTH, "50"));
     }
 
     @Test
