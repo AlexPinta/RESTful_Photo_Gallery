@@ -148,8 +148,8 @@ public class GalleryController {
 	 */
 	private void setModelAttribute(ModelAndView model) {
 		int countInRow = 4;
-		int imageHeight = 200;
-		int imageWidth = 200;
+		final int IMAGE_HEIGHT = 200;
+		final int IMAGE_WIDTH = 200;
 		boolean isOriginalSize = false;
 		
 		if (!model.isEmpty()) {
@@ -170,8 +170,8 @@ public class GalleryController {
 		model.addObject(ModelAttributePoint.BACKGROUND_COLOR, "");
 		model.addObject(ModelAttributePoint.IMAGE_COUNT_IN_ROW, countInRow);
 		model.addObject(ModelAttributePoint.ORIGINAL_IMAGE_SIZE, isOriginalSize);
-		model.addObject(ModelAttributePoint.IMAGE_HEIGHT, imageHeight);
-		model.addObject(ModelAttributePoint.IMAGE_WIDTH, imageWidth);
+		model.addObject(ModelAttributePoint.IMAGE_HEIGHT, IMAGE_HEIGHT);
+		model.addObject(ModelAttributePoint.IMAGE_WIDTH, IMAGE_WIDTH);
 		model.addObject(ModelAttributePoint.IMAGES_IN_ROW, imagesInRow);
 	}
 }
