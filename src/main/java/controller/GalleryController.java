@@ -153,9 +153,9 @@ public class GalleryController {
 			}
 		}
 
-		int[] arrayForRendering = new int[countInRow];
+		int[] imagesInRow = new int[countInRow];
 		for (int i = countInRow-1; i >= 0; i--) {
-			arrayForRendering[countInRow-i-1] = i;
+			imagesInRow[countInRow-i-1] = i;
 		}
 
 		model.addObject(ModelAttributePoint.LIST_FILES, fileManager.getFileQueue().toArray());
