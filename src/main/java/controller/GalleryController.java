@@ -1,13 +1,12 @@
 package controller;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Map;
-import java.util.stream.IntStream;
 
 import helper.EndPoints;
 import helper.FileManager;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.util.MultiValueMap;
@@ -30,6 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 */
 @RestController
 public class GalleryController {
+	final static Logger logger = Logger.getLogger(GalleryController.class);
 	@Autowired
 	FileManager fileManager;
 	final public String INDEX_PAGE = "index";
@@ -57,7 +57,6 @@ public class GalleryController {
 		setModelAttribute(modelAndView);
 		modelAndView.addObject(ModelAttributePoint.IMAGE_HEIGHT, ORIGINAL_IMAGE_SIZE);
 		modelAndView.addObject(ModelAttributePoint.IMAGE_WIDTH, ORIGINAL_IMAGE_SIZE);
-//		modelAndView.addObject(ModelAttributePoint.ORIGINAL_IMAGE_SIZE, true);
 		return modelAndView;
 	}
 
@@ -109,7 +108,7 @@ public class GalleryController {
 		try {
 			fileBytes = fileManager.retrieveFile(fileHashCode);
 		} catch (IOException e) {
-			//TODO logging
+			logger.error("Can't retrieve file by hash code : " + fileHashCode, e);
 		}
 		return fileBytes;
 	}
@@ -131,7 +130,7 @@ public class GalleryController {
 					fileManager.saveFile(file.getInputStream(), file.getOriginalFilename());
 				}
 			} catch (IOException e) {
-				//TODO logging
+				logger.error("Can't save file on server: " + file.getOriginalFilename(), e);
 			}
 		}
 		setModelAttribute(modelAndView);
@@ -165,6 +164,6 @@ public class GalleryController {
 		model.addObject(ModelAttributePoint.IMAGE_COUNT_IN_ROW, countInRow);
 		model.addObject(ModelAttributePoint.IMAGE_HEIGHT, IMAGE_HEIGHT);
 		model.addObject(ModelAttributePoint.IMAGE_WIDTH, IMAGE_WIDTH);
-		model.addObject(ModelAttributePoint.ARRAY_FOR_RENDERING, arrayForRendering);
+		model.addObject(ModelAttributePoint.IMAGES_IN_ROW, imagesInRow);
 	}
 }

@@ -46,8 +46,8 @@
         
         <div class="galleryBackground" >
 	        <h2 th:if="${listFiles.length}">The Photos have been uploaded!</h2>
-		        <div th:each="data, row: ${listFiles}" th:with="numList=${arrayForRendering}" th:if="${row.count % imageCountInRow == 0 or row.last}" class="span3">
-				    <img alt="" th:width="${imageWidth}" th:height="${imageHeight}" th:each="num : ${numList}" th:with="dataIndex=(${row.index} - ${num})"
+		        <div th:each="data, row: ${listFiles}" th:with="numList=${imagesInRow}" th:if="${row.count % imageCountInRow == 0 or row.last}" class="span3">
+				    <img alt="" th:width="${imageWidth}" th:height="${!isOriginalSize ? imageHeight : 'auto'}" th:each="num : ${numList}" th:with="dataIndex=(${row.index} - ${num})"
 				    	th:if="${row.count % imageCountInRow == 0}" th:src="@{/photo/get/{hashCode}(hashCode=${listFiles[dataIndex].getFileHashCode()})}"/>
 					<img alt="" th:width="${imageWidth}" th:height="${imageHeight}" th:each="num : ${numList}" th:with="dataIndex=(${row.index} - ${num})"
 						th:if="${row.last} and ${row.count % imageCountInRow != 0} and ${num &lt; row.count % imageCountInRow}" th:src="@{/photo/get/{hashCode}(hashCode=${listFiles[dataIndex].getFileHashCode()})}"/>

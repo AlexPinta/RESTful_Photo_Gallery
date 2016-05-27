@@ -12,5 +12,5 @@ public interface ModelAttributePoint {
     String IMAGE_COUNT_IN_ROW = "imageCountInRow";
     String IMAGE_HEIGHT = "imageHeight";
     String IMAGE_WIDTH = "imageWidth";
-    String ARRAY_FOR_RENDERING = "arrayForRendering";
+    String IMAGES_IN_ROW = "imagesInRow";
 }

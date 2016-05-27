@@ -15,7 +15,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @ComponentScan(basePackages = { "controller", "helper" })
 @PropertySource("classpath:/settings/application.properties")
 public class Application {
-    public static void main( String[] args ) throws Exception {
+	public static void main( String[] args ) throws Exception {
         SpringApplication.run(Application.class, args);
     }
 }

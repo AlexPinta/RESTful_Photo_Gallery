@@ -59,6 +59,7 @@ public class FileManager {
         final FileProperty fileProperty = new FileProperty(file);
         fileProperty.generateHashCode(buffer.toByteArray());
         this.fileQueue.add(fileProperty);
+        logger.info("File " + fileProperty.getFile().getPath() + " retreived successfully.");
     }
 
     /**
@@ -86,6 +87,7 @@ public class FileManager {
             buffer.flush();
             fileBytes = buffer.toByteArray();
             buffer.close();
+            logger.info("File " + fileProperty.getFile().getPath() + " retreived successfully.");
         }
         return fileBytes;
    }
@@ -107,13 +109,9 @@ public class FileManager {
             logger.warn("File " + hashCode + " wasn\'t deleted due to it wasn\'t found.");
             return;
         }
-        try {
-            fileProperty.getFile().deleteOnExit();
-            getFileQueue().remove(fileProperty);
-            logger.info("File " + fileProperty.getFile().getPath() + " deleted successfully.");
-        } catch (SecurityException e) {
-            logger.error("Error while deleting a File " + fileProperty.getFile().getPath() + ".");
-        }
+        fileProperty.getFile().deleteOnExit();
+		getFileQueue().remove(fileProperty);
+		logger.info("File " + fileProperty.getFile().getPath() + " deleted successfully.");
     }
 
     public void clearFileQueue() {
@@ -141,9 +139,10 @@ public class FileManager {
             try {
                 final byte[] md5Transformation = MessageDigest.getInstance(ENCODING_METHOD).digest(buffer);
                 this.fileHashCode = DatatypeConverter.printHexBinary(md5Transformation);
+                logger.info("Hash code generated succesfully" + this.fileHashCode);
             } catch (NoSuchAlgorithmException e) {
                 this.fileHashCode = "";
-                //TODO logging
+                logger.error("Error while generating hash code.", e);
             }
         }
 
